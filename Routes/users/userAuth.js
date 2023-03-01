@@ -1,13 +1,18 @@
 const router = require("express").Router();
 const User = require("../../models/User");
+const CryptoJS = require("crypto-js");
 
 router.post("/registeruser", async (req, res) => {
     const newUser = new User({
         username: req.body.username,
         email: req.body.email,
         contact: req.body.contact,
-        password: req.body.password,
-        confirmPassword: req.body.confirmPassword,
+        password: CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.SECRET_KEY).toString(),
+        confirmPassword: CryptoJS.AES.encrypt(
+            req.body.confirmPassword,
+            process.env.SECRET_KEY).toString(),
     });
 
     try {
@@ -20,17 +25,21 @@ router.post("/registeruser", async (req, res) => {
 
 router.post("/loginuser", async (req, res) => {
     try {
-        const { contact, password } = req.body;
-
-        const user = await User.findOne({ contact });
-        if (user == null) {
+       
+        const user = await User.findOne({ contact: req.body.contact });
+        if (!user) {
             res.status(404).json({
                 status: "failure",
                 message: "User not found"
             })
         }
         else {
-            if (password == user.password) {
+            const hashedPassword = CryptoJS.AES.decrypt(
+                user.password,
+                process.env.SECRET_KEY);
+
+            const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);    
+            if (originalPassword == req.body.password) {
                 res.status(200).json({
                     status: "success",
                     message: "Login Successful",
@@ -40,7 +49,7 @@ router.post("/loginuser", async (req, res) => {
             else {
                 res.status(404).json({
                     status: "failure",
-                    message: "Invalid Credentials"
+                    message: "Invalid Password"
                 })
             }
         }

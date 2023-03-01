@@ -1,9 +1,8 @@
 const express = require ("express");
 const app = express();
 const dotenv = require("dotenv");
-const vendorsignup = require("./Routes/vendors/vendorsSignup");
+const vendorsignup = require("./Routes/vendors/vendorAuth");
 const usersignup = require("./Routes/users/userAuth");
-
 
 
 dotenv.config();
