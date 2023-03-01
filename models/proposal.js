@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userProposal = new mongoose.Schema({
-    Username: {
+    eventName: {
         type: String,
         require: true,
     },
@@ -43,7 +43,18 @@ const userProposal = new mongoose.Schema({
         type: String,
         require: true,
     },
-    
+    foodPreferences : {
+        type: String,
+        require: true,
+    }, 
+    events:{
+        type: String,
+        require: true,
+    },
+    images : {
+        type: String,
+        require :true,
+    }
 },
 {
     timestamps: true
