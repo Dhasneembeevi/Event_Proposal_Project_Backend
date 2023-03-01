@@ -3,7 +3,6 @@ const { Event } = require('../models/proposal')
 
 
 router.get('/allproposals', async(req,res)=>{
-   // const { proposalType, eventType,  budget, fromDate, toDate} = req.body;
     try {
         const proposals = await Event.find().sort({_id:"-1"})
         res.json({

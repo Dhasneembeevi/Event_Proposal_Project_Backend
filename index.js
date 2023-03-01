@@ -1,11 +1,14 @@
 const express = require ("express");
 const app = express();
 const dotenv = require("dotenv");
-const vendorsignup = require("./Routes/vendors/vendorsSignup")
+const vendorsignup = require("./Routes/vendors/vendorAuth");
+const usersignup = require("./Routes/users/userAuth");
+
 
 dotenv.config();
 const mongoose = require("mongoose");
 const allProposals = require('./Routes/Proposal')
+
 mongoose.set('strictQuery', false);
 app.use(express.json());
 
@@ -22,7 +25,9 @@ app.get('/', (req,res)=>{
 })
 
 app.use('/api', allProposals)
-app.use("/api/auth",vendorsignup)
+app.use("/api/auth",vendorsignup);
+app.use("/api/auth" , usersignup);
+
 
 app.listen(PORT, () =>{
     console.log(`port is running at ${PORT}`)
