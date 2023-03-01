@@ -1,8 +1,8 @@
 const express = require ("express");
 const app = express();
 const dotenv = require("dotenv");
-// const userRoute = require("./routes/user");
-// const authRoute = require("./routes/auth")
+const vendorsignup = require("./Routes/vendors/vendorsSignup")
+
 dotenv.config();
 const mongoose = require("mongoose");
 const allProposals = require('./Routes/Proposal')
@@ -22,6 +22,7 @@ app.get('/', (req,res)=>{
 })
 
 app.use('/api', allProposals)
+app.use("/api/auth",vendorsignup)
 
 app.listen(PORT, () =>{
     console.log(`port is running at ${PORT}`)

@@ -30,4 +30,4 @@ const signupUser = new mongoose.Schema({
         unique: true,
     }
 })
-module.exports = mongoose.model("Signup" , signupUser)
+module.exports = mongoose.model("User" , signupUser )
