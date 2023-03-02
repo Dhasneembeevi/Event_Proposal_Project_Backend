@@ -21,13 +21,11 @@ const signupUser = new mongoose.Schema({
     password: {
         type: String,
         require: true,
-        unique: true,
     },
 
     confirmPassword: {
         type: String,
         require: true,
-        unique: true,
     }
 })
 module.exports = mongoose.model("User" , signupUser )

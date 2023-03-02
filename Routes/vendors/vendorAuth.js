@@ -15,19 +15,42 @@ router.post("/registervendor", async (req, res) => {
       process.env.SECRET_KEY).toString(),
   });
 
+  // try {
+  //   const savedVendor = await newVendor.save();
+  //   res.status(201).json(savedVendor);
+  // } catch (err) {
+  //   res.status(500).json(err);
+  // }
+
   try {
+    const data = await Vendor.findOne({contact: req.body.contact});
+    if(data !== null){
+        res.status(409).json({
+            status: "failure",
+            message: "Vendor already exists"
+        })
+    }
+    else{
     const savedVendor = await newVendor.save();
-    res.status(201).json(savedVendor);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+    res.status(201).json({
+        status: "success",
+        message: "Vendor created",
+        savedVendor
+    });
+    console.log(savedVendor);
+    }
+} catch (err) {
+    res.status(500).json({
+        status: "failed",
+        message: err.message});
+}
 })
 
 router.post("/loginvendor", async (req, res) => {
   try {
-
-    const vendor = await Vendor.findOne({ contact: req.body.contact });
-    if (!vendor) {
+    const { contact , password } = req.body
+    const vendor = await Vendor.findOne({ contact: contact });
+    if (vendor == null) {
       res.status(404).json({
         status: "failure",
         message: "Vendor not found"
@@ -39,7 +62,7 @@ router.post("/loginvendor", async (req, res) => {
         process.env.SECRET_KEY);
 
       const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-      if (originalPassword == req.body.password) {
+      if (originalPassword == password) {
         res.status(200).json({
           status: "success",
           message: "Login Successful",
@@ -48,7 +71,7 @@ router.post("/loginvendor", async (req, res) => {
       }
       else {
         res.status(404).json({
-          status: "failure",
+          status: "failure2",
           message: "Invalid Password"
         })
       }
@@ -57,7 +80,7 @@ router.post("/loginvendor", async (req, res) => {
   catch (error) {
     res.status(500).json({
       status: "failure",
-      message: "Internal Server Error"
+      message: error.message,
     })
   }
 })

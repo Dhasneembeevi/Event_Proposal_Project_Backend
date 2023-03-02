@@ -16,7 +16,6 @@ router.get('/allproposals', async (req, res) => {
             message: error.message
         })
     }
-    res.send("helooo")
 })
 
 // router.post("/createproposals", async (req, res) => {

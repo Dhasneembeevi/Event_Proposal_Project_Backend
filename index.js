@@ -33,9 +33,9 @@ app.get('/', (req,res)=>{
     res.send("hello")
 })
 
-app.use("/", allProposals)
-app.use("/api/auth",vendorsignup);
-app.use("/api/auth" , usersignup);
+app.use(allProposals)
+app.use(vendorsignup);
+app.use(usersignup);
 
 app.post("/createproposals", (req, res) => {
     const { eventName, eventPlace, proposalType, eventType, eventClass, budget, fromDate, toDate, description, foodPreferences, events } = req.body;
