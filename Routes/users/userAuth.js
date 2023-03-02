@@ -34,6 +34,7 @@ router.post("/loginuser", async (req, res) => {
             })
         }
         else {
+            console.log(user)
             const hashedPassword = CryptoJS.AES.decrypt(
                 user.password,
                 process.env.SECRET_KEY);
@@ -48,7 +49,7 @@ router.post("/loginuser", async (req, res) => {
             }
             else {
                 res.status(404).json({
-                    status: "failure",
+                    status: "failure2",
                     message: "Invalid Password"
                 })
             }

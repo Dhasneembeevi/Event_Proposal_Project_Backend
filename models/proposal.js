@@ -5,17 +5,14 @@ const userProposal = new mongoose.Schema({
         type: String,
         require: true,
     },
-
    eventPlace: {
         type: String,
         require: true,
     },
-
     proposalType : {
         type: String,
         require: true,
     },
-
     eventType: {
         type: String,
         require: true,
@@ -24,8 +21,7 @@ const userProposal = new mongoose.Schema({
         type: String,
         require: true,
     },
-
-  budget: {
+    budget: {
         type: Number,
         require: true,
     },
@@ -37,8 +33,6 @@ const userProposal = new mongoose.Schema({
         type: Date,
         require: true,
     },
-    
-
     description: {
         type: String,
         require: true,
@@ -52,7 +46,7 @@ const userProposal = new mongoose.Schema({
         require: true,
     },
     images : {
-        type: String,
+        type: [String],
         require :true,
     }
 },
