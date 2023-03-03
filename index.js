@@ -1,7 +1,7 @@
-const express = require ("express");
+const express = require("express");
 const bodyParser = require('body-parser');
 const Event = require('./models/proposal')
-const cors= require('cors');
+const cors = require('cors');
 const path = require("path");
 const mongoose = require("mongoose");
 require('dotenv').config();
@@ -19,9 +19,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const fileupload = require('express-fileupload');
 
 mongoose.set('strictQuery', true);
-mongoose.connect(process.env.MONGO_URL).then(()=>
+mongoose.connect(process.env.MONGO_URL).then(() =>
     console.log("connected to mongodb")
-).catch((err )=>{
+).catch((err) => {
     console.log(`${err}`)
 })
 
@@ -29,7 +29,7 @@ app.use(cors());
 app.use(express.json());
 app.use(fileupload());
 
-app.get('/', (req,res)=>{
+app.get('/', (req, res) => {
     res.send("hello")
 })
 
@@ -40,8 +40,8 @@ app.use(usersignup);
 app.post("/createproposals", (req, res) => {
     const { eventName, eventPlace, proposalType, eventType, eventClass, budget, fromDate, toDate, description, foodPreferences, events } = req.body;
     console.log({ eventName, eventPlace, proposalType, eventType, eventClass, budget, fromDate, toDate, description, foodPreferences, events })
-console.log(req.body, req.files)
-console.log(req.files)
+    console.log(req.body, req.files)
+    console.log(req.files)
     const { images } = req.files;
     images.mv("./images/" + images.name, async (err) => {
         if (err) {
@@ -71,11 +71,11 @@ console.log(req.files)
         }
     })
 })
-app.get('../images/:filename', async(req,res)=>{
+app.get('../images/:filename', async (req, res) => {
     res.sendFile(path.join(__dirname, `../images/${req.params.filename}`))
 })
 
 const PORT = 5000 || process.env.PORT
-app.listen(PORT, () =>{
+app.listen(PORT, () => {
     console.log(`port is running at ${PORT}`)
 })

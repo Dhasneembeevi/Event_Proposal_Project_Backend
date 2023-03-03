@@ -26,12 +26,10 @@ const userProposal = new mongoose.Schema({
         require: true,
     },
     fromDate:{
-        type: Date,
-        require: true,
+        type: String,
     },
     toDate:{
-        type: Date,
-        require: true,
+        type: String,
     },
     description: {
         type: String,

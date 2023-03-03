@@ -18,40 +18,37 @@ router.get('/allproposals', async (req, res) => {
     }
 })
 
-// router.post("/createproposals", async (req, res) => {
-//     const { eventName, eventPlace, proposalType, eventType, eventClass, budget, fromDate, toDate, description, foodPreferences, events } = req.body;
-//     console.log({ eventName, eventPlace, proposalType, eventType, eventClass, budget, fromDate, toDate, description, foodPreferences, events })
-//     const { images } = req.files;
-//     images.mv("../images/" + images.name, async (err) => {
-//         if (err) {
-//             res.status(500).json({
-//                 message: err
-//             })
-//         }
-//         else {
-//             const createProposal = new Event({
-//                 ...{ eventName, eventPlace, proposalType, eventType, eventClass, budget, fromDate, toDate, description, foodPreferences, events, images },
-//                 images: images.name
-//             });
-//             try {
-//                 const newProposal = await createProposal.save();
-//                 res.status(201).json({
-//                     message: "Proposal saved successfully",
-//                     newProposal
-//                 })
-
-//             } catch (error) {
-//                 res.status(500).json({
-//                     message: "missing fields"
-//                 })
-//                 console.log(error)
-//             }
-//         }
-//     })
-//     res.send("hellooo")
-// })
-// router.get('../images/:filename', async(req,res)=>{
-//     res.sendFile(path.join(__dirname, `../images/${req.params.filename}`))
-// })
+router.put("/update/:id", async(req,res)=>{
+    try{
+        await Event.updateOne({_id:req.params.id},req.body);
+        const data=await Event.find({_id:req.params.id});
+        res.status(200).json({
+            status:"success",
+            data
+        })
+    }
+    catch(e){
+         res.status(400).json({
+            status:"failed",
+            message:e.message
+         })   
+    }
+    })
+    
+    router.delete("/delete/:id", async(req,res)=>{
+        try{
+            await Event.deleteOne({_id:req.params.id});
+            res.status(200).json({
+                status:"Success",
+                
+             })  
+        }
+        catch(e){
+             res.status(400).json({
+                status:"failed",
+                message:e.message
+             })
+    }
+    })
 
 module.exports = router;
