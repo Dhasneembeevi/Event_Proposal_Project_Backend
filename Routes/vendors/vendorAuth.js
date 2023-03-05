@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Vendor = require("../../models/Vendor");
 const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
 
 router.post("/registervendor", async (req, res) => {
   const newVendor = new Vendor({
@@ -15,12 +16,12 @@ router.post("/registervendor", async (req, res) => {
       process.env.SECRET_KEY).toString(),
   });
 
-  // try {
-  //   const savedVendor = await newVendor.save();
-  //   res.status(201).json(savedVendor);
-  // } catch (err) {
-  //   res.status(500).json(err);
-  // }
+  try {
+    const savedVendor = await newVendor.save();
+    res.status(201).json(savedVendor);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 
   try {
     const data = await Vendor.findOne({contact: req.body.contact});
@@ -44,7 +45,7 @@ router.post("/registervendor", async (req, res) => {
         status: "failed",
         message: err.message});
 }
-})
+});
 
 router.post("/loginvendor", async (req, res) => {
   try {
@@ -63,15 +64,17 @@ router.post("/loginvendor", async (req, res) => {
 
       const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
       if (originalPassword == password) {
+        const token = jwt.sign({ userId: vendor._id }, process.env.JWT_SEC);
         res.status(200).json({
           status: "success",
           message: "Login Successful",
-          vendor
+          token: token,
+          vendor: vendor,
         })
       }
       else {
         res.status(404).json({
-          status: "failure2",
+          status: "failure",
           message: "Invalid Password"
         })
       }
@@ -83,7 +86,6 @@ router.post("/loginvendor", async (req, res) => {
       message: error.message,
     })
   }
-})
+});
 
 module.exports = router;
-

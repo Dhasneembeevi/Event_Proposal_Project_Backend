@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const fileupload = require('express-fileupload');
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URL).then(() =>
