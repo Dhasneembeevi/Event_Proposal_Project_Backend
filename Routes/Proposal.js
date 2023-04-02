@@ -18,6 +18,40 @@ router.get('/allproposals', async (req, res) => {
     }
 })
 
+router.get('/allproposals/:id', async (req, res) => {
+    try {
+        const proposals = await Event.find({_id:req.params.id})
+        res.json({
+            status: "success",
+            proposals,
+        })
+    }
+    catch (error) {
+        res.status(404).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+})
+
+router.get('/allproposals/:eventType', async(req, res) => {
+    const eventType = req.params.eventType;
+    try {
+        const proposals = await Event.find({eventType })
+        res.status(200).json({
+            status: "success",
+            proposals,
+        })
+    }
+    catch (error) {
+        res.status(404).json({
+            status: "Failed",
+            message: error.message
+        })
+    }
+})
+  
+
 router.put("/update/:id", async(req,res)=>{
     try{
         await Event.updateOne({_id:req.params.id},req.body);
